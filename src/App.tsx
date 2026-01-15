@@ -15,6 +15,25 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  // eslint-disable-next-line
+  const [filter, setFilter] = useState('');
+
+  const filtration = (method: string) => {
+    const filteredTodos = [...todos];
+
+    setFilter(method);
+
+    switch (method) {
+      case 'all':
+        return setTodos(filteredTodos);
+      case 'active':
+        return setTodos(filteredTodos.filter(todo => !todo.completed));
+      case 'completed':
+        return setTodos(filteredTodos.filter(todo => todo.completed));
+      default:
+        return setTodos(filteredTodos);
+    }
+  };
 
   const openModal = (t: Todo) => {
     setSelectedTodo(t);
@@ -42,7 +61,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter onSelect={filtration} />
             </div>
 
             <div className="block">
