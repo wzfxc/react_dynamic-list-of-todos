@@ -1,8 +1,10 @@
 interface Props {
   onSelect: (method: string) => void;
+  onSearch: (search: string) => void;
+  query: string;
 }
 
-export const TodoFilter: React.FC<Props> = ({ onSelect }) => (
+export const TodoFilter: React.FC<Props> = ({ onSelect, onSearch, query }) => (
   <form className="field has-addons">
     <p className="control">
       <span className="select">
@@ -10,7 +12,7 @@ export const TodoFilter: React.FC<Props> = ({ onSelect }) => (
           data-cy="statusSelect"
           onChange={event => onSelect(event.target.value)}
         >
-          <option value="a">All</option>
+          <option value="all">All</option>
           <option value="active">Active</option>
           <option value="completed">Completed</option>
         </select>
@@ -23,6 +25,8 @@ export const TodoFilter: React.FC<Props> = ({ onSelect }) => (
         type="text"
         className="input"
         placeholder="Search..."
+        value={query}
+        onChange={event => onSearch(event.target.value)}
       />
       <span className="icon is-left">
         <i className="fas fa-magnifying-glass" />
@@ -30,7 +34,14 @@ export const TodoFilter: React.FC<Props> = ({ onSelect }) => (
 
       <span className="icon is-right" style={{ pointerEvents: 'all' }}>
         {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-        <button data-cy="clearSearchButton" type="button" className="delete" />
+        {query && (
+          <button
+            data-cy="clearSearchButton"
+            type="button"
+            className="delete"
+            onClick={() => onSearch('')}
+          />
+        )}
       </span>
     </p>
   </form>
